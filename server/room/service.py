@@ -19,6 +19,34 @@ async def check_dates(date_in: datetime.date, date_out: datetime.date):
         raise exceptions.DatesFail
 
 
+async def send_mail(
+    taddres: str, message, title: str, faddres="support@voskresensky-hotel.ru"
+):
+    print("Создаю объект почты")
+    smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
+    print("Создал объект почты")
+    print("Создаю объект сообщения")
+
+    message["Subject"] = Header(title, "utf-8")
+    message["From"] = faddres
+    message["To"] = taddres
+    print("Создал объект сообщения")
+    print("Создаю starttls")
+
+    smtpObj.starttls()
+    print("Создал starttls")
+    print("Логинюсь")
+
+    smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
+    print("Залогинился")
+    print("Отпраляю")
+    smtpObj.sendmail(message["From"], message["To"], message.as_string())
+    print("Отправил")
+    print("Выхожу")
+    smtpObj.quit()
+    print("Вышел")
+
+
 class RoomService:
     @staticmethod
     async def get_all_rooms():
@@ -126,19 +154,28 @@ class RoomService:
             if approached:
                 res = await RoomService.check_car_places(dates, data.car_place)
                 await RoomService.reservation_create(data, room.id)
-                smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
-                msg = MIMEText(
-                    f"Гость зарезервировал новую комнату\nС {data.date_in} до {data.date_out}",
-                    "plain",
-                    "utf-8",
+                await send_mail(
+                    "support@voskresensky-hotel.ru",
+                    MIMEText(
+                        f"Гость зарезервировал новую комнату\nС {data.date_in} до {data.date_out}",
+                        "plain",
+                        "utf-8",
+                    ),
+                    "Новая бронь",
                 )
-                msg["Subject"] = Header("Новая бронь", "utf-8")
-                msg["From"] = "support@voskresensky-hotel.ru"
-                msg["To"] = "support@voskresensky-hotel.ru"
-                smtpObj.starttls()
-                smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
-                smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
-                smtpObj.quit()
+                # smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
+                # msg = MIMEText(
+                #     f"Гость зарезервировал новую комнату\nС {data.date_in} до {data.date_out}",
+                #     "plain",
+                #     "utf-8",
+                # )
+                # msg["Subject"] = Header("Новая бронь", "utf-8")
+                # msg["From"] = "support@voskresensky-hotel.ru"
+                # msg["To"] = "support@voskresensky-hotel.ru"
+                # smtpObj.starttls()
+                # smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
+                # smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
+                # smtpObj.quit()
                 if res == False:
                     return {"status": "ok", "message": "car places"}
                 return {"status": "ok"}
@@ -197,19 +234,28 @@ class AdminLogic:
         reservation.state = settings.ReservationState.WAIT.value
 
         await reservation.save()
-        smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
-        msg = MIMEText(
-            f"Ваша бронь одобрена!",
-            "plain",
-            "utf-8",
+        await send_mail(
+            reservation.email,
+            MIMEText(
+                f"Ваша бронь одобрена!",
+                "plain",
+                "utf-8",
+            ),
+            "Бронь одобрена",
         )
-        msg["Subject"] = Header("Новая бронь", "utf-8")
-        msg["From"] = "support@voskresensky-hotel.ru"
-        msg["To"] = reservation.email
-        smtpObj.starttls()
-        smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
-        smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
-        smtpObj.quit()
+        # smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
+        # msg = MIMEText(
+        #     f"Ваша бронь одобрена!",
+        #     "plain",
+        #     "utf-8",
+        # )
+        # msg["Subject"] = Header("Новая бронь", "utf-8")
+        # msg["From"] = "support@voskresensky-hotel.ru"
+        # msg["To"] = reservation.email
+        # smtpObj.starttls()
+        # smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
+        # smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
+        # smtpObj.quit()
         return {"status": "ok"}
 
     @staticmethod
