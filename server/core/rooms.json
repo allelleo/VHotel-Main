@@ -1,0 +1,131 @@
+{
+	"rooms": [
+		{
+			"room_type": "Classic одноместный",
+			"capasity": 1,
+			"description": "Classic одноместный Classic одноместный Classic одноместный Classic одноместный",
+			"price": 1000,
+			"status": true,
+			"images": [{ "src": "img1.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Classic одноместный",
+			"capasity": 1,
+			"description": "Classic одноместный Classic одноместный Classic одноместный Classic одноместный",
+			"price": 1000,
+			"status": true,
+			"images": [{ "src": "img1.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Classic одноместный",
+			"capasity": 1,
+			"description": "Classic одноместный Classic одноместный Classic одноместный Classic одноместный",
+			"price": 1000,
+			"status": true,
+			"images": [{ "src": "img1.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Classic двухместный",
+			"capasity": 2,
+			"description": "Classic двухместный Classic двухместный Classic двухместный Classic двухместный",
+			"price": 2000,
+			"status": true,
+			"images": [{ "src": "img2.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Classic двухместный",
+			"capasity": 2,
+			"description": "Classic двухместный Classic двухместный Classic двухместный Classic двухместный",
+			"price": 2000,
+			"status": true,
+			"images": [{ "src": "img2.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Classic двухместный",
+			"capasity": 2,
+			"description": "Classic двухместный Classic двухместный Classic двухместный Classic двухместный",
+			"price": 2000,
+			"status": true,
+			"images": [{ "src": "img2.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+
+		{
+			"room_type": "Standart king size",
+			"capasity": 2,
+			"description": "Standart king size Standart king size Standart king size",
+			"price": 3000,
+			"status": true,
+			"images": [{ "src": "img3.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Standart king size",
+			"capasity": 2,
+			"description": "Standart king size Standart king size Standart king size",
+			"price": 3000,
+			"status": true,
+			"images": [{ "src": "img3.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Standart king size",
+			"capasity": 2,
+			"description": "Standart king size Standart king size Standart king size",
+			"price": 3000,
+			"status": true,
+			"images": [{ "src": "img3.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Standart двухместный",
+			"capasity": 2,
+			"description": "Standart двухместный Standart двухместный Standart двухместный",
+			"price": 4000,
+			"status": true,
+			"images": [{ "src": "img4.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Standart двухместный",
+			"capasity": 2,
+			"description": "Standart двухместный Standart двухместный Standart двухместный",
+			"price": 4000,
+			"status": true,
+			"images": [{ "src": "img4.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Standart двухместный",
+			"capasity": 2,
+			"description": "Standart двухместный Standart двухместный Standart двухместный",
+			"price": 4000,
+			"status": true,
+			"images": [{ "src": "img4.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Deluxe",
+			"capasity": 2,
+			"description": "Deluxe",
+			"price": 5000,
+			"status": true,
+			"images": [{ "src": "img5.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		},
+		{
+			"room_type": "Deluxe",
+			"capasity": 2,
+			"description": "Deluxe",
+			"price": 5000,
+			"status": true,
+			"images": [{ "src": "img5.jpg" }],
+			"services": [{ "title": "wifi" }, { "title": "Кондиционер" }]
+		}
+	]
+}
