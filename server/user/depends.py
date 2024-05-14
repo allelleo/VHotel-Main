@@ -10,11 +10,12 @@ async def authorization_header(authorization: str = Header(None)):
 
 
 async def decode_token(jwt: str = Depends(authorization_header)):
+    print(jwt)
     return await token.decode_token(jwt)
 
 
 async def get_user(payload: dict = Depends(decode_token)):
-    user_id = payload.get('user_id', None)
+    user_id = payload.get("user_id", None)
 
     if user_id is None:
         raise exceptions.InvalidTokenException

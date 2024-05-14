@@ -1,14 +1,11 @@
 import datetime
 
 from core import settings
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from room import models, schemas, service
+from user import depends
 
 room = APIRouter()
-
-
-class FakeAdmin:
-    is_admin = True
 
 
 @room.post("/create/room/dev")
@@ -100,37 +97,46 @@ async def reservation_room(r: Request, data: schemas.ReservationRequest):
 
 
 @room.get("/admin/info")
-async def get_rooms_all_info(r: Request):
-    return await service.AdminLogic.get_rooms_all_info(FakeAdmin())
+async def get_rooms_all_info(r: Request, usr: str = Depends(depends.get_user)):
+    return await service.AdminLogic.get_rooms_all_info(usr)
 
 
 @room.get("/admin/room/status")
-async def change_room_status(r: Request, room_id: int, status: bool):
+async def change_room_status(
+    r: Request, room_id: int, status: bool, usr: str = Depends(depends.get_user)
+):
     return await service.AdminLogic.change_room_status(
-        user=FakeAdmin(), room_id=room_id, status=status
+        user=usr, room_id=room_id, status=status
     )
 
 
 @room.get("/admin/room/price")
-async def change_room_price(r: Request, room_id: int, price: int):
+async def change_room_price(
+    r: Request, room_id: int, price: int, usr: str = Depends(depends.get_user)
+):
     return await service.AdminLogic.change_room_price(
-        user=FakeAdmin(), room_id=room_id, price=price
+        user=usr, room_id=room_id, price=price
     )
 
 
 @room.get("/admin/reservation/accept")
-async def reservation_accept(r: Request, reservation_id: int):
+async def reservation_accept(
+    r: Request, reservation_id: int, usr: str = Depends(depends.get_user)
+):
     return await service.AdminLogic.reservation_accept(
-        user=FakeAdmin(), reservation_id=reservation_id
+        user=usr, reservation_id=reservation_id
     )
 
 
 @room.get("/admin/reservation/change")
 async def reservation_change_status(
-    r: Request, reservation_id: int, status: settings.RESRVATION_STATES_LITERAL
+    r: Request,
+    reservation_id: int,
+    status: settings.RESRVATION_STATES_LITERAL,
+    usr: str = Depends(depends.get_user),
 ):
     return await service.AdminLogic.reservation_change_status(
-        user=FakeAdmin(), reservation_id=reservation_id, status=status
+        user=usr, reservation_id=reservation_id, status=status
     )
 
 

@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from room.controller import room
 from user.controller import user
-
+from news.controller import news
+from actions.controller import actions
 from . import database, settings
 
 
@@ -21,6 +22,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(user, prefix="/user")
 app.include_router(room, prefix="/room", tags=["room"])
+app.include_router(news, prefix="/news", tags=["news"])
+app.include_router(actions, prefix="/actions", tags=["actions"])
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

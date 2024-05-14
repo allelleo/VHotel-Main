@@ -15,6 +15,7 @@ DATABASE = {
         "models": [
             "user.models",
             "room.models",
+            "news.models",
         ],
     },
 }

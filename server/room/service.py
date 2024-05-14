@@ -3,6 +3,7 @@ import smtplib
 from email.header import Header
 from email.mime.text import MIMEText
 
+
 from core import settings
 from room import exceptions, models, schemas
 from tortoise.expressions import Q as Query
@@ -23,28 +24,32 @@ async def send_mail(
     taddres: str, message, title: str, faddres="support@voskresensky-hotel.ru"
 ):
     print("Создаю объект почты")
-    smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
+    smtpObj = smtplib.SMTP("193.168.3.186", 25)
+
     print("Создал объект почты")
     print("Создаю объект сообщения")
 
-    message["Subject"] = Header(title, "utf-8")
-    message["From"] = faddres
-    message["To"] = taddres
+    msg = MIMEText(message, "plain", "utf-8")
+    msg["Subject"] = Header(title, "utf-8")
+    msg["From"] = faddres
+    msg["To"] = taddres
+
     print("Создал объект сообщения")
     print("Создаю starttls")
 
     smtpObj.starttls()
-    print("Создал starttls")
-    print("Логинюсь")
 
-    smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
-    print("Залогинился")
-    print("Отпраляю")
-    smtpObj.sendmail(message["From"], message["To"], message.as_string())
-    print("Отправил")
-    print("Выхожу")
+    print("Start TLS successfully")
+
+    smtpObj.login("xt16905@localhost", "xxXX1234")
+
+    smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
+
+    print("Send message successfully")
+
     smtpObj.quit()
-    print("Вышел")
+
+    print("Close connection successfully")
 
 
 class RoomService:
@@ -142,18 +147,8 @@ class RoomService:
             if len(reservations) == 0:
                 await RoomService.check_car_places(dates, data.car_place)
                 await RoomService.reservation_create(data, room.id)
-                return {"status": "ok"}
+                print("SEND MAIL")
 
-            approached = True
-            for reservation in reservations:
-
-                for date in dates:
-                    if reservation.date_in <= date <= reservation.date_out:
-                        approached = False
-
-            if approached:
-                res = await RoomService.check_car_places(dates, data.car_place)
-                await RoomService.reservation_create(data, room.id)
                 await send_mail(
                     "support@voskresensky-hotel.ru",
                     MIMEText(
@@ -163,19 +158,33 @@ class RoomService:
                     ),
                     "Новая бронь",
                 )
-                # smtpObj = smtplib.SMTP("smtp.timeweb.ru", 25)
-                # msg = MIMEText(
-                #     f"Гость зарезервировал новую комнату\nС {data.date_in} до {data.date_out}",
-                #     "plain",
-                #     "utf-8",
-                # )
-                # msg["Subject"] = Header("Новая бронь", "utf-8")
-                # msg["From"] = "support@voskresensky-hotel.ru"
-                # msg["To"] = "support@voskresensky-hotel.ru"
-                # smtpObj.starttls()
-                # smtpObj.login("support@voskresensky-hotel.ru", "xxXX1234")
-                # smtpObj.sendmail(msg["From"], msg["To"], msg.as_string())
-                # smtpObj.quit()
+                return {"status": "ok"}
+
+            approached = True
+
+            for reservation in reservations:
+
+                for date in dates:
+                    if reservation.date_in <= date <= reservation.date_out:
+                        approached = False
+            print("if approached:")
+            print(approached)
+            if approached:
+                print("SEND MAIL")
+                res = await RoomService.check_car_places(dates, data.car_place)
+                await RoomService.reservation_create(data, room.id)
+                print("SEND MAIL")
+
+                await send_mail(
+                    "support@voskresensky-hotel.ru",
+                    MIMEText(
+                        f"Гость зарезервировал новую комнату\nС {data.date_in} до {data.date_out}",
+                        "plain",
+                        "utf-8",
+                    ),
+                    "Новая бронь",
+                )
+
                 if res == False:
                     return {"status": "ok", "message": "car places"}
                 return {"status": "ok"}
