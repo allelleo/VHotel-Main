@@ -18,11 +18,15 @@ class News(Model):
     time_created = DatetimeField(auto_now_add=True)
     time_updated = DatetimeField(auto_now=True)
 
-    content: str = CharField(max_length=250)
+    title: str = CharField(max_length=250)
+    image: str = CharField(max_length=250)
+    link: str = CharField(max_length=250)
 
     async def json(self):
         return {
             "id": self.id,
-            "content": self.content,
+            "title": self.title,
+            "image": self.image,
+            "link": self.link,
             "time_created": self.time_created,
         }

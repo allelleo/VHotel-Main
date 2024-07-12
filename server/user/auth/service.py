@@ -2,6 +2,8 @@ from core import settings
 from tortoise.transactions import in_transaction
 from user import models, token
 from user.auth import exceptions, schemas
+import uuid
+import random
 
 
 async def sign_up(data: schemas.SignUpRequest):
@@ -9,13 +11,11 @@ async def sign_up(data: schemas.SignUpRequest):
         raise exceptions.WrongAdminCreatePasswordException
     if await models.User.exists(email=data.email):
         raise exceptions.EmailExistsException
-    if await models.User.exists(username=data.username):
-        raise exceptions.UsernameExistsException
 
     async with in_transaction() as transaction:
         user = models.User(
             email=data.email,
-            username=data.username,
+            username=f"{uuid.uuid4()}_{random.randint(0, 100)}"[0:29],
             first_name=data.first_name,
             last_name=data.last_name,
             is_admin=True,
