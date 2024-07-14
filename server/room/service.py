@@ -93,6 +93,27 @@ class RoomService:
         return True
 
     @staticmethod
+    async def get_car_places(date: datetime.date, places: int = 15):
+        filter = [
+            Query(state=settings.ReservationState.CREATED.value),
+            Query(state=settings.ReservationState.WAIT.value),
+            Query(state=settings.ReservationState.COME.value),
+        ]
+        rooms = await models.Room.filter(status=True)
+        car_place_bisy = []
+        for room in rooms:
+            pl = 0
+            for reservation in await room.reservation.filter(*filter):
+                if reservation.date_in <= date <= reservation.date_out:
+                    pl += 1
+            car_place_bisy.append(pl)
+        # if any(
+        #     [True if i > settings.PARKING_PLACES else False for i in car_place_bisy]
+        # ):
+        #     return False
+        return sum(car_place_bisy)
+
+    @staticmethod
     async def check_car_places(dates: list[datetime.date], places: int):
         if places == 0:
             print("PARKING +")

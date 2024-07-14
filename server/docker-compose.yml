@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+    depends_on:
+      - nginx
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/static

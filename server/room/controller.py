@@ -8,6 +8,12 @@ from user import depends
 room = APIRouter()
 
 
+@room.get("/cars")
+async def get_cars_places(r: Request, date: datetime.date):
+    places = await service.RoomService.get_car_places(date)
+    return {"bisy": places}
+
+
 @room.post("/create/room/dev")
 async def create_room_dev(
     room_type: str,
